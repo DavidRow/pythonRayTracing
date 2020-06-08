@@ -1,5 +1,6 @@
 from math import sqrt
 
+#a Vector with a magntiude and diration
 class Vector:
 
     #Vector in 3d space
@@ -21,7 +22,7 @@ class Vector:
 
     #calulates the normal vector
     def normalize(self):
-        return self / self.magnitude 
+        return self / self.magnitude() 
 
     # makes a string of the vector: x,y,z
     def __str__(self):
@@ -38,5 +39,6 @@ class Vector:
     def __rmul__(self, number):
         return self.__mul__(number)
     def __truediv__(self, number):
+
         return Vector(self.x / number, self.y / number, self.z / number) 
     
