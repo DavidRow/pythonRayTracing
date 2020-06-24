@@ -34,7 +34,7 @@ class Vector:
     def __sub__(self, otherVector):
         return Vector(self.x - otherVector.x, self.y - otherVector.y, self.z - otherVector.z) 
     def __mul__(self, number):
-        assert not isinstance(number, Vector)
+        assert not isinstance(number, Vector) 
         return Vector(self.x * number, self.y * number, self.z * number) 
     def __rmul__(self, number):
         return self.__mul__(number)

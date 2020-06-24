@@ -23,3 +23,7 @@ class Sphere:
             if dist > 0:
                 return dist
         return None
+    
+    #finds the normal vector at a point in the sphere
+    def normal(self, point):
+        return (point - self.center).normalize()
