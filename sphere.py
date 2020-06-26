@@ -7,23 +7,52 @@ class Sphere:
         self.center = center
         self.radius = radius
         self.material = material
-    
-    #calulates the interseciton between a ray and this sphere, returnes Distance if intersection, None if no intersection
-    #https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection < -- formula stolen from here
-    # cannot handle ray starting inside sphere
-    def intersection(self, ray):
-        sphereToRay = ray.origin - self.center
-        b = 2 * ray.direction.dotProduct(sphereToRay)
-        c = sphereToRay.dotProduct(sphereToRay) - self.radius * self.radius
-        discriminant = b * b - 4 * c
+        self.radius2 = radius ** 2
+    #https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
+    def intersection(self,ray, secondValue = False):
+        #vector between O (the ray's origin) and C (the sphere's center)
+        OriginToCenter = ray.origin - self.center
+        #rays direction
+        D = ray.direction
+        a = 1
+        b = 2 * D.dotProduct(OriginToCenter)
+        c = OriginToCenter.dotProduct(OriginToCenter) - self.radius2
+        discriminant = b * b - 4 * c * a
+        #the ray and the circel never intersect
+        if discriminant < 0: 
+            return None
+        # the ray and the circel intersect at one point
+        if discriminant == 0:
+            distance = (-b) / 2
+            if(distance < 0):
+                return None
+            return distance
+        # the ray and the circel intersect in two places
+        else:
+            if(secondValue is False):
+                distance = (-b - sqrt(discriminant)) / 2
+                # if the distance is negative, see if the other value works
+                if(distance < 0):
+                   distance = (-b + sqrt(discriminant)) / 2
+                   # if both distances are negative than this ray must be 
+                   if(distance < 0):
+                        return None
+                   return distance
+                return distance
+            else:
+                distance = (-b + sqrt(discriminant)) / 2
+                if(distance < 0):
+                    return None
+                return distance
 
-        if discriminant >=0:
-            # simplidfied quadratic formula
-            dist = (- b - sqrt(discriminant)) / 2
-            if dist > 0:
-                return dist
-        return None
-    
+            
+        
     #finds the normal vector at a point in the sphere
     def normal(self, point):
         return (point - self.center).normalize()
+
+    #finds if a point it inside the sphere
+    #http://www.miguelcasillas.com/?p=38#:~:text=Calculating%20to%20see%20if%20a,point%20is%20inside%20the%20sphere.
+    def inside(self, point):
+        distanceFromCenter = sqrt(point.dotProduct(self.center))
+        return distanceFromCenter < radius

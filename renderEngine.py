@@ -9,8 +9,6 @@ import math
 class RenderEngine():
     MaxReflections = 5
     MinDisplacement  = 0.0001
-    
-
     # the xmax should be 1, xmin should be -1
     # same for y
     def render(self, scene):
@@ -44,7 +42,6 @@ class RenderEngine():
         hitPosition = ray.origin + ray.direction * dist_hit
         hitNormal = hitObject.normal(hitPosition)
         color += self.ColorAt(hitObject, hitPosition,hitNormal ,scene) 
-
         #find reflections
         #https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
         if(numberOfReflections < self.MaxReflections):
@@ -54,8 +51,60 @@ class RenderEngine():
             new_ray_direction = ray.direction - 2 * (hitNormal.dotProduct(ray.direction)) * hitNormal
             reflectedRay = Ray(new_ray_origin, new_ray_direction)
             color += self.rayTrace(reflectedRay, scene, numberOfReflections + 1) * hitObject.material.reflection
+        if(hitObject.material.refractable is True):
+            color += self.refract(hitObject, hitPosition, hitNormal,ray, scene)
         return color
 
+    #find color of the object for every pixel
+    def ColorAt(self, hitObject, hitPosition, normal,scene):
+
+        material = hitObject.material
+        objectColor = material.colorAt(hitPosition)
+        camera = scene.camera - hitPosition
+        color = material.ambient * Color.fromHex("#F00000")
+        specularK = 500
+        for light in scene.lights:
+            #posiion and direction of the light ray created by the light source 
+            lightRay = Ray(hitPosition, light.position - hitPosition)
+            Lightdirection = lightRay.direction
+            if(True):
+                addedColor = self.ExpensiveDiffuseShading(objectColor, material, normal, Lightdirection,hitPosition, light, scene)
+                if(addedColor is not None):
+                    color += addedColor
+            else: 
+                color += (
+                    #objectColor * material.diffuse * max(normal.dotProduct(lightRay.direction), 0)
+                )
+            # Specular shading (Blinn–Phong reflection model) 
+            # halfVector = the angle halfway between the light source and the reflextion ray 
+            # = (V * R)^k 
+            # K = constant on how shinine something is
+            # V = viewer's ray 
+            # R = lights perfectly reflected ray
+            # we can replace V with H, the halfway vector between the viewer and the light
+            # H = L = light source ray + V = viewer's ray
+            #https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model - for more info
+            halfVector = (lightRay.direction + camera).normalize()
+            color += light.color * material.specular * max(normal.dotProduct(halfVector), 0) ** specularK
+
+        #print(color)
+        return color
+
+    #https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
+    def refract(self, hitObject, hitPosition, hitNormal,ray, scene):
+        n_1 = 1
+        n_2 = hitObject.n
+        n = n_1 / n_2
+    #hihi
+    def ExpensiveDiffuseShading(self, objectColor, material, normal, Lightdirection,hitPosition, light,scene):
+        new_ray_origin = hitPosition + normal * self.MinDisplacement
+        ObjectToLight = Ray(new_ray_origin, light.position - hitPosition)
+        dist_hit, hitObject = self.findNearist(ObjectToLight, scene)
+        if(hitObject is None):
+            return objectColor * material.diffuse * max(normal.dotProduct(Lightdirection), 0)
+        else:
+            return None
+            
 
     #find nearist object    
     def findNearist(self, ray, scene):
@@ -73,40 +122,4 @@ class RenderEngine():
                 hitObject = obj
         return (minimum, hitObject)
 
-    #find color of the object for every pixel
-    def ColorAt(self, hitObject, hitPosition, normal,scene):
-
-        material = hitObject.material
-        objectColor = material.colorAt(hitPosition)
-        camera = scene.camera - hitPosition
-        color = material.ambient * Color.fromHex("#F00000")
-        specularK = 500
-        for light in scene.lights:
-            #posiion and direction of the light ray created by the light source 
-            lightRay = Ray(hitPosition, light.position - hitPosition)
-
-            # Diffuse shading (Lambert) 
-            # the farther away the norm of the object is to the light direction of the light source, the dimmer it is 
-            #formula Color = L * N(M)(C)
-            # L = pointing from the surface to the light
-            # N = and a normalized light-direction vector
-            # M = Material's diffusion constant 
-            # C = color of object 
-            color += (
-                objectColor * material.diffuse * max(normal.dotProduct(lightRay.direction), 0)
-            )
-
-            # Specular shading (Blinn–Phong reflection model) 
-            # halfVector = the angle halfway between the light source and the reflextion ray 
-            # = (V * R)^k 
-            # K = constant on how shinine something is
-            # V = viewer's ray 
-            # R = lights perfectly reflected ray
-            # we can replace V with H, the halfway vector between the viewer and the light
-            # H = L = light source ray + V = viewer's ray
-            #https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model - for more info
-            halfVector = (lightRay.direction + camera).normalize()
-            color += light.color * material.specular * max(normal.dotProduct(halfVector), 0) ** specularK
-        #print(color)
-        return color
 

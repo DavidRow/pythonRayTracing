@@ -1,0 +1,42 @@
+{
+    "FileName" : "shadow.ppm",
+    "WIDTH" : 600,
+    "HEIGHT" : 400,
+    "fov": 120,
+    "Camera" : {
+        "x":1,
+        "y":1,
+        "z":-10
+    } ,
+    "objects" : {
+        "ground": {
+            "x":0,
+            "y": -10000.5,
+            "z":1,
+            "diamiter":10000.0,
+            "Material Type": "Chequered",
+            "colorEven":"#FF1D58",
+            "colorOdd" :"#00DDFF"
+        },
+        "BlueBall": {
+            "x":0,
+            "y":0.7,
+            "z":0,
+            "diamiter":0.6,
+            "Material Type": "Normal",
+            "color":"#0049B7",
+            "reflection": 0.05
+        }
+    },
+    "lights": {
+        "Light1": {
+            "x":0,
+            "y":200,
+            "z":0,
+            "color":"#FFFFFF"
+        }
+
+    }
+
+
+}
