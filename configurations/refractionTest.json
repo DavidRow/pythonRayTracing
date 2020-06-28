@@ -1,26 +1,26 @@
 {
-    "FileName" : "refraction.ppm",
+    "FileName" : "refraction.png",
     "WIDTH" : 600,
     "HEIGHT" : 400,
-    "fov": 120,
+    "fov": 90,
     "Camera" : {
         "x":0,
-        "y":4,
+        "y":3,
         "z":-10
     } ,
     "objects" : {
         "ground": {
             "x":0,
             "y": -10000.5,
-            "z":1,
+            "z":0,
             "diamiter":10000.0,
             "Material Type": "Chequered",
             "colorEven":"#3bcfff",
             "colorOdd":"#d1f4ff",
-            "reflection": 0,
-            "specular": 0,
-            "diffuse" :2.0,
-            "ambient" : 0.1
+            "reflection": 1,
+            "specular": 1,
+            "diffuse" :1,
+            "ambient" : 0.3
         },
         "Ball": {
             "x":0,
@@ -37,9 +37,10 @@
     "lights": {
         "Light1": {
             "x":1.5,
-            "y":10,
+            "y":10, 
             "z":-10.0,
-            "color":"#FFFFFF"
+            "color":"#FFFFFF",
+            "specular": 0
         }
     }
 

@@ -50,9 +50,3 @@ class Sphere:
     #finds the normal vector at a point in the sphere
     def normal(self, point):
         return (point - self.center).normalize()
-
-    #finds if a point it inside the sphere
-    #http://www.miguelcasillas.com/?p=38#:~:text=Calculating%20to%20see%20if%20a,point%20is%20inside%20the%20sphere.
-    def inside(self, point):
-        distanceFromCenter = sqrt(point.dotProduct(self.center))
-        return distanceFromCenter < radius

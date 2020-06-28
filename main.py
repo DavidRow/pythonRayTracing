@@ -11,14 +11,16 @@ from light import Light
 from material import Material 
 from material import Chequered
 import json
+import time
 def main():
+    start_time = time.time()
     #open file and red configuration from it
-    file = open("configurations/twoBalls.json")
+    file = open("configurations/twoBalls.json") 
     settings = json.loads(file.read()) 
     args = "Images/" + str(settings["FileName"])
     WIDTH  = settings["WIDTH"]
     HEIGHT = settings["HEIGHT"]
-    if "ambient" in settings:
+    if "fov" in settings:
         fov = settings["fov"]
     else:
         fov = 90
@@ -58,7 +60,12 @@ def main():
         elif(thisObject["Material Type"] == "Chequered"):
             colorEven = color = thisObject["colorEven"]
             colorOdd = color = thisObject["colorOdd"]
-            objects.append(Sphere(Point(x, y, z), diamiter,Chequered(Color.fromHex(colorEven), Color.fromHex(colorOdd))))
+            objects.append(Sphere(Point(x, y, z), diamiter,Chequered(Color.fromHex(colorEven), Color.fromHex(colorOdd)
+            , ambient = ambient
+            , diffuse = diffuse
+            , specular = specular
+            , reflection = reflection)))
+            
         
     for light in settings["lights"]:
         x = settings["lights"][light]["x"]
@@ -71,8 +78,9 @@ def main():
     engine = RenderEngine()
     image = engine.render(scene)
 
-    with open(args, "w") as img_file:
-        image.writePPM(img_file)
+    with open(args, "wb") as img_file:
+        image.write(img_file)
+    print("it Took %s seconds to run" %(time.time() - start_time))
 
 
 if __name__ == '__main__':

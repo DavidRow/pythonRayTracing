@@ -1,39 +1,43 @@
 {
-    "FileName" : "twoBalls.ppm",
-    "WIDTH" : 800,
-    "HEIGHT" : 500,
-    "fov": 120,
+    "FileName" : "twoBalls.png",
+    "WIDTH" : 300,
+    "HEIGHT" : 300,
+    "fov": 110,
     "Camera" : {
-        "x":1,
-        "y":1,
-        "z":-10
+        "x":0,
+        "y":0,
+        "z":0
     } ,
     "objects" : {
         "ground": {
             "x":0,
-            "y": -10000.5,
-            "z":1,
-            "diamiter":10000.0,
+            "y": -1000.5,
+            "z":0,
+            "diamiter":1000.0,
             "Material Type": "Chequered",
             "colorEven":"#FF1D58",
-            "colorOdd" :"#00DDFF"
+            "colorOdd" :"#00DDFF",
+            "reflection" : 0.05,
+            "specular": 0
         },
         "BlueBall": {
             "x":-1,
             "y":0.5,
-            "z":0,
+            "z":-1,
             "diamiter":0.6,
             "Material Type": "Normal",
             "color":"#0049B7",
-            "reflection": 0.05
+            "reflection": 0.05,
+            "specular" : 0
         },
         "PinkBall": {
             "x":0,
             "y":0,
-            "z":0,
+            "z":-1,
             "diamiter":0.1,
             "Material Type": "Normal",
-            "color":"FFF685"
+            "color":"FFF685",
+            "specular" : 0
         }   
     },
     "lights": {

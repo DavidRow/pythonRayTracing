@@ -11,4 +11,3 @@ class Color(Vector):
         y = int(hex[3:5], 16) 
         z = int(hex[5:7], 16) 
         return cls(x , y, z)  
-
