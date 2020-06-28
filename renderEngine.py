@@ -7,7 +7,7 @@ from color import Color
 import math
 #rendors all the objects
 class RenderEngine():
-    MaxReflections = 5
+    MaxReflections = 2
     MinDisplacement  = 0.0000001
     specularK = 500
     # the xmax should be 1, xmin should be -1
@@ -18,15 +18,16 @@ class RenderEngine():
         fov = scene.fov
         fovInRad = math.radians(fov)
         aspectRatio = float(width) / height
+        fovNum = math.tan(fovInRad/2)
         #https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays
         camera = scene.camera
         pixels = Image(width, height)
         for j in range(height):
             PixelNDCY = (j + .5 )/ height 
-            Y = (1 - 2 * PixelNDCY) * math.tan(fovInRad/2)
+            Y = (1 - 2 * PixelNDCY) * fovNum
             for i in range(width):
                 PixelNDCYX = (i + .5 )/ width
-                X = ((2 * PixelNDCYX - 1) * aspectRatio) * math.tan(fovInRad/2)
+                X = ((2 * PixelNDCYX - 1) * aspectRatio) * fovNum
 
                 ray = Ray(camera, Point(X,Y, -1 ) - camera )
                 pixels.setPixle(i,j, self.rayTrace(ray, scene)) 

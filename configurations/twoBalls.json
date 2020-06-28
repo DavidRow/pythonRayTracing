@@ -1,8 +1,8 @@
 {
     "FileName" : "twoBalls.png",
-    "WIDTH" : 300,
-    "HEIGHT" : 300,
-    "fov": 110,
+    "WIDTH" : 400,
+    "HEIGHT" : 400,
+    "fov": 130,
     "Camera" : {
         "x":0,
         "y":0,

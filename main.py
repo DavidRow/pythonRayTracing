@@ -20,6 +20,7 @@ def main():
     args = "Images/" + str(settings["FileName"])
     WIDTH  = settings["WIDTH"]
     HEIGHT = settings["HEIGHT"]
+    # fov will cause distortion
     if "fov" in settings:
         fov = settings["fov"]
     else:
