@@ -1,12 +1,15 @@
 {
     "FileName" : "twoBalls.png",
-    "WIDTH" : 400,
-    "HEIGHT" : 400,
-    "fov": 130,
+    "WIDTH" : 1800,
+    "HEIGHT" : 800,
+    "fov": 90,
+    "xrotation" :0,
+    "yrotation" :0,
+    "zrotation" :0,
     "Camera" : {
         "x":0,
         "y":0,
-        "z":0
+        "z":1
     } ,
     "objects" : {
         "ground": {
@@ -28,7 +31,7 @@
             "Material Type": "Normal",
             "color":"#0049B7",
             "reflection": 0.05,
-            "specular" : 0
+            "specular" : 1
         },
         "PinkBall": {
             "x":0,
@@ -42,15 +45,15 @@
     },
     "lights": {
         "Light1": {
-            "x":1.5,
+            "x":-1.5,
             "y":10000,
             "z":-10.0,
             "color":"#FFFFFF"
         },
         "Light2": {
-            "x":100,
-            "y":100.5,
-            "z":100,
+            "x":10,
+            "y":10,
+            "z":-1,
             "color":"#FFFFFF"
         }
 

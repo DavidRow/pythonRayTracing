@@ -25,6 +25,25 @@ def main():
         fov = settings["fov"]
     else:
         fov = 90
+    #https://www.tutorialspoint.com/computer_graphics/3d_transformation.htm
+    # rotation around the x axis
+    if "xrotation" in settings:
+        xrotation = settings["xrotation"]
+    else:
+        xrotation = 0
+    # rotation around the y axis
+    if "yrotation" in settings:
+        yrotation = settings["yrotation"]
+    else:
+        yrotation = 0
+    # rotation around the z axis
+    if "zrotation" in settings:
+        zrotation = settings["zrotation"]
+    else:
+        zrotation = 0
+
+    
+    
     camera = Vector (settings["Camera"]["x"],settings["Camera"]["y"],settings["Camera"]["z"])
     objects = []
     lights  = []
@@ -41,7 +60,7 @@ def main():
         #the higher this is the shinyer the little shine looks on the sphere
         specular   = 1.0
         #the higher this is the more it reflects it's surroundings
-        reflection = 0.5
+        reflection = 0.05
         if "ambient" in thisObject:
             ambient = thisObject["ambient"]
         if "diffuse" in thisObject:
@@ -75,7 +94,7 @@ def main():
         color = settings["lights"][light]["color"] 
         lights.append(Light(Point(x, y, z), Color.fromHex(color))) 
         
-    scene = Scene(camera, objects, lights, WIDTH, HEIGHT, fov)
+    scene = Scene(camera, objects, lights, WIDTH, HEIGHT, fov, xrotation, yrotation, zrotation)
     engine = RenderEngine()
     image = engine.render(scene)
 

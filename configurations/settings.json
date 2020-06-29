@@ -2,16 +2,16 @@
     "Camera" : {
         "x":0,
         "y":0,
-        "z":-2
+        "z":0
     } ,
     "FileName" : "test.png",
-    "WIDTH" : 300,
-    "HEIGHT" : 300,
+    "WIDTH" : 400,
+    "HEIGHT" : 400,
     "objects" : {
         "Sphere1": {
             "x":0,
             "y":0,
-            "z":0,
+            "z":-1,
             "diamiter":0.5,
             "Material Type": "Normal",
             "color":"#FF0000"
@@ -19,9 +19,9 @@
     },
     "lights": {
         "Light1": {
-            "x":25,
-            "y":25,
-            "z":-10.0,
+            "x":7,
+            "y":7,
+            "z":-1,
             "color":"#FFFFFF"
         }
     }
