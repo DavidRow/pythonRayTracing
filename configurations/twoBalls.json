@@ -1,14 +1,14 @@
 {
     "FileName" : "twoBalls.png",
-    "WIDTH" : 1800,
-    "HEIGHT" : 800,
+    "WIDTH" : 3000,
+    "HEIGHT" : 2000,
     "fov": 90,
-    "xrotation" :0,
+    "xrotation" :10,
     "yrotation" :0,
     "zrotation" :0,
     "Camera" : {
         "x":0,
-        "y":0,
+        "y":0.5,
         "z":1
     } ,
     "objects" : {
@@ -46,16 +46,19 @@
     "lights": {
         "Light1": {
             "x":-1.5,
-            "y":10000,
+            "y":10,
             "z":-10.0,
-            "color":"#FFFFFF"
+            "color":"#FFFFFF",
+            "intensity" : 500
         },
         "Light2": {
-            "x":10,
-            "y":10,
+            "x":1,
+            "y":1,
             "z":-1,
-            "color":"#FFFFFF"
+            "color":"#FFFFFF",
+            "intensity" : 12
         }
+
 
     }
 

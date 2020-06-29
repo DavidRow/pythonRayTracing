@@ -92,7 +92,12 @@ def main():
         y = settings["lights"][light]["y"]
         z = settings["lights"][light]["z"]
         color = settings["lights"][light]["color"] 
-        lights.append(Light(Point(x, y, z), Color.fromHex(color))) 
+        if "intensity" in settings["lights"][light]:
+            intensity = settings["lights"][light]["intensity"]
+        else:
+            intensity = 1
+
+        lights.append(Light(Point(x, y, z), Color.fromHex(color), intensity)) 
         
     scene = Scene(camera, objects, lights, WIDTH, HEIGHT, fov, xrotation, yrotation, zrotation)
     engine = RenderEngine()

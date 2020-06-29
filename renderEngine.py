@@ -97,11 +97,9 @@ class RenderEngine():
             if(True):
                 ObjectToLight = Ray(new_ray_origin, lightDirection)
                 dist_hit, hitObject = self.findNearist(ObjectToLight, scene)
-                addedColor = self.ExpensiveDiffuseShading(normilzedLightDirection, hitObject,dist_hit, objectColor, material, normal, lightDirection , hitPosition, light, new_ray_origin, scene)
-                if(addedColor is not None):
-                    color += addedColor
-                else:
-                    color = color
+                if(hitObject is None or dist_hit >= lightDirection.magnitude()):
+                    addedColor = self.ExpensiveDiffuseShading(normilzedLightDirection, hitObject,dist_hit, objectColor, material, normal, lightDirection , hitPosition, light, new_ray_origin, scene)
+                    color += self.LightIntensityColor(light, lightDirection) + addedColor 
             else: 
                 color += objectColor * material.diffuse * max(normal.dotProduct(normilzedLightDirection), 0)
             
@@ -116,15 +114,16 @@ class RenderEngine():
     # M = Material's diffusion constant 
     # C = color of object 
     def ExpensiveDiffuseShading(self,normilzedLightDirection,hitObject,dist_hit,  objectColor, material, normal, Lightdirection,hitPosition, light, new_ray_origin, scene):
+        # light color = LightIntensity * light color / 4 pi r^2 
+        return (objectColor * material.diffuse * max(normal.dotProduct(normilzedLightDirection), 0))
 
-        if(hitObject is None or dist_hit >= Lightdirection.magnitude()):
-            return objectColor * material.diffuse * max(normal.dotProduct(normilzedLightDirection), 0)
-        else:
-            return Color(0,0,0)
+
     #https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
     def refract(self, hitObject, hitPosition, hitNormal,ray, scene):
         pass
-
+    #find the intensity and light color emitted by the light onto surfaces
+    def LightIntensityColor(self,light, Lightdirection):
+        return (light.intensity * light.color) / (4 * math.pi * (Lightdirection.magnitude() ** 2)) 
     # Specular shading (Blinn–Phong reflection model) 
     # halfVector = the angle halfway between the light source and the reflextion ray 
     # = (V * R)^k 
