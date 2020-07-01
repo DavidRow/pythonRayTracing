@@ -15,7 +15,7 @@ import time
 def main():
     start_time = time.time()
     #open file and red configuration from it
-    file = open("configurations/twoBalls.json") 
+    file = open("configurations/settings.json") 
     settings = json.loads(file.read()) 
     args = "Images/" + str(settings["FileName"])
     WIDTH  = settings["WIDTH"]
@@ -61,6 +61,10 @@ def main():
         specular   = 1.0
         #the higher this is the more it reflects it's surroundings
         reflection = 0.05
+        # n is the index of refraciton (it effects the direction of the refracted light ray)
+        n = 1.5
+        # states if something is refractable
+        refractable = False
         if "ambient" in thisObject:
             ambient = thisObject["ambient"]
         if "diffuse" in thisObject:
@@ -69,6 +73,10 @@ def main():
             specular = thisObject["specular"]
         if "reflection" in thisObject:
             reflection = thisObject["reflection"]
+        if ("refractable" in thisObject and thisObject["refractable"] == "True"):
+            refractable = True
+        if "n" in thisObject:
+            n = thisObject["n"]
         if(thisObject["Material Type"] == "Normal" ):
             color = thisObject["color"] 
             objects.append(Sphere(Point(x, y, z), 
@@ -76,7 +84,10 @@ def main():
             , ambient = ambient
             , diffuse = diffuse
             , specular = specular
-            , reflection = reflection ) ))
+            , reflection = reflection 
+            , n = n
+            , refractable = refractable
+            ) ))
         elif(thisObject["Material Type"] == "Chequered"):
             colorEven = color = thisObject["colorEven"]
             colorOdd = color = thisObject["colorOdd"]

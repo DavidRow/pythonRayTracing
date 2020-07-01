@@ -68,12 +68,16 @@ class RenderEngine():
         color += self.ColorAt(hitObject, hitPosition, hitNormal, new_ray_origin, scene) 
         #find reflections
         #https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
-        if(depth < self.MaxReflections):
+        #if(hitObject.material.refractable is True): 
+        if(hitObject.material.refractable and depth < self.MaxReflections):
+            refractedRay = self.refract(hitObject, hitPosition, hitNormal,ray, scene)
+            # tell if inside object
+            color += self.rayTrace(refractedRay, scene, depth + 1)
+        elif(depth < self.MaxReflections):
             new_ray_direction = ray.direction - (2 * hitNormal * (hitNormal.dotProduct(ray.direction)))
             reflectedRay = Ray(new_ray_origin, new_ray_direction)
             color += self.rayTrace(reflectedRay, scene, depth + 1) * hitObject.material.reflection
-        #if(hitObject.material.refractable is True):
-            #color += self.refract(hitObject, hitPosition, hitNormal,ray, scene)
+
         
         return color
 
@@ -94,14 +98,14 @@ class RenderEngine():
             normilzedLightDirection = lightDirection.normalize()
 
             #switch this to false to change it to a less expensive diffuse shading
-            if(True):
+            if(True and material.refractable is not True):
                 ObjectToLight = Ray(new_ray_origin, lightDirection)
                 dist_hit, hitObject = self.findNearist(ObjectToLight, scene)
                 if(hitObject is None or dist_hit >= lightDirection.magnitude()):
                     addedColor = self.ExpensiveDiffuseShading(normilzedLightDirection, hitObject,dist_hit, objectColor, material, normal, lightDirection , hitPosition, light, new_ray_origin, scene)
                     color += self.LightIntensityColor(light, lightDirection) + addedColor 
-            else: 
-                color += objectColor * material.diffuse * max(normal.dotProduct(normilzedLightDirection), 0)
+            #else: 
+                #color += objectColor * material.diffuse * max(normal.dotProduct(normilzedLightDirection), 0)
             
             color += self.specularShading(normilzedLightDirection,scene.camera, light, material,normal)
 
@@ -119,11 +123,31 @@ class RenderEngine():
 
 
     #https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
+    #returns refracted ray
     def refract(self, hitObject, hitPosition, hitNormal,ray, scene):
-        pass
+        NormalDotIncoming = hitNormal.dotProduct(ray.direction)
+        cosi = NormalDotIncoming
+        n = hitNormal
+        n1 = 1
+        n2 = hitObject.material.n
+        if(cosi < 0):
+            cosi = - cosi
+        else:
+            n1 = n2
+            n2 = 1
+            n = hitNormal * -1
+        NOverN = n1/n2
+        c2 = 1 - NOverN * NOverN * (1 - cosi * cosi)
+        # c1=cos(θ1)=N⋅I
+        # c2= √1 - (n1n2)^2 * (1−cos2(θ1))
+        # T=ηI+(ηc1−c2)N
+
+        return  Ray(hitPosition - (n *  self.MinDisplacement), NOverN * ray.direction + (((NOverN * cosi - math.sqrt(c2))) * n))
+
     #find the intensity and light color emitted by the light onto surfaces
     def LightIntensityColor(self,light, Lightdirection):
         return (light.intensity * light.color) / (4 * math.pi * (Lightdirection.magnitude() ** 2)) 
+
     # Specular shading (Blinn–Phong reflection model) 
     # halfVector = the angle halfway between the light source and the reflextion ray 
     # = (V * R)^k 
