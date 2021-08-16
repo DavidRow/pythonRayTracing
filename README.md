@@ -1,5 +1,9 @@
 # pythonRayTracing
-I'll write this later lol
+some images this program created:
+![RayTracedImage](https://raw.githubusercontent.com/DavidRow/pythonRayTracing/master/Images/test.png)
+![RayTracedImage](https://raw.githubusercontent.com/DavidRow/pythonRayTracing/master/Images/twoBalls.png)
+![RayTracedImage](https://raw.githubusercontent.com/DavidRow/pythonRayTracing/master/Images/shadow.png)
+![RayTracedImage](https://raw.githubusercontent.com/DavidRow/pythonRayTracing/master/Images/refraction.png)
 
 # dependencies
 numpy 
