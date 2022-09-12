@@ -8,6 +8,3 @@ some images this program created:
 ![RayTracedImage](https://raw.githubusercontent.com/DavidRow/pythonRayTracing/master/Images/shadow.png)
 ![RayTracedImage](https://raw.githubusercontent.com/DavidRow/pythonRayTracing/master/Images/refraction.png)
 
-# dependencies
-numpy 
-pillow 
